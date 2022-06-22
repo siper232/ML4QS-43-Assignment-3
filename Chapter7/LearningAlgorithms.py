@@ -61,6 +61,7 @@ class ClassificationAlgorithms:
         pred_prob_test_y = nn.predict_proba(test_X)
         pred_training_y = nn.predict(train_X)
         pred_test_y = nn.predict(test_X)
+        print(pred_prob_training_y)
         frame_prob_training_y = pd.DataFrame(pred_prob_training_y, columns=nn.classes_)
         frame_prob_test_y = pd.DataFrame(pred_prob_test_y, columns=nn.classes_)
 
