@@ -68,6 +68,14 @@ features_after_chapter_4 = list(set().union(basic_features, pca_features, time_f
 features_after_chapter_5 = list(set().union(basic_features, pca_features, time_features, freq_features, cluster_features))
 
 fs = FeatureSelectionRegression()
+selected_features, ordered_features, ordered_scores = fs.forward_selection(10,
+                                                                  train_X[features_after_chapter_3],
+                                                                  train_y,)
+print(ordered_scores)
+print(selected_features)
+print(ordered_features)
+DataViz.plot_xy(x=[range(1, 10+1)], y=[ordered_scores],
+                xlabel='number of features', ylabel='MSE')
 
 # First, let us consider the Pearson correlations and see whether we can select based on them.
 features, correlations = fs.pearson_selection(10, train_X[features_after_chapter_5], train_y)

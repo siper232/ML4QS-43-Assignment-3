@@ -94,9 +94,9 @@ DataViz.plot_xy(x=[range(1, N_FORWARD_SELECTION+1)], y=[ordered_scores],
 
 
 # based on python2 features, slightly different. 
-selected_features = ['acc_phone_y_freq_0.0_Hz_ws_40', 'press_phone_pressure_temp_mean_ws_120', 'gyr_phone_x_temp_std_ws_120',
-                     'mag_watch_y_pse', 'mag_phone_z_max_freq', 'gyr_watch_y_freq_weighted', 'gyr_phone_y_freq_1.0_Hz_ws_40',
-                     'acc_phone_x_freq_1.9_Hz_ws_40', 'mag_watch_z_freq_0.9_Hz_ws_40', 'acc_watch_y_freq_0.5_Hz_ws_40']
+selected_features = ['ay_freq_0.0_Hz_ws_40', 'temp_temp_mean_ws_120', 'gx_temp_std_ws_120',
+                      'gy_freq_weighted', 'gx_freq_1.0_Hz_ws_40',
+                     'ay_freq_1.9_Hz_ws_40', 'az_freq_0.5_Hz_ws_40']
 
 # # # Let us first study the impact of regularization and model complexity: does regularization prevent overfitting?
 
