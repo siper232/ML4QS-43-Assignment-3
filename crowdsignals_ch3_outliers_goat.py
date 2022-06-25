@@ -122,7 +122,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
 
-    parser.add_argument('--mode', type=str, default='final',
+    parser.add_argument('--mode', type=str, default='chauvenet',
                         help="Select what version to run: LOF, distance, mixture, chauvenet or final \
                         'LOF' applies the Local Outlier Factor to a single variable \
                         'distance' applies a distance based outlier detection method to a single variable \

@@ -1,2 +1,3 @@
 .cache
 *.pyc
+datasets/goat_data/pos_A.csv

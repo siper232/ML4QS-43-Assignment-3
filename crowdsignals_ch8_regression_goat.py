@@ -61,8 +61,7 @@ dataset.index = pd.to_datetime(dataset.index)
 prepare = PrepareDatasetForLearning()
 
 train_X, test_X, train_y, test_y = prepare.split_single_dataset_regression_by_time(dataset, 'ax', '2022-06-07 00:00:05',
-#                                                                                   '2016-02-08 18:29:58','2016-02-08 18:29:59')
-                                                                                   '2022-06-07 00:01:14', '2022-06-07 00:01:44')
+                                                                                   '2022-06-07 01:22:26', '2022-06-07 01:56:43')
 
 print('Training set length is: ', len(train_X.index))
 print('Test set length is: ', len(test_X.index))
@@ -74,7 +73,7 @@ print('Test set length is: ', len(test_X.index))
 
 # Select subsets of the features that we will consider:
 
-basic_features = ['ay','az','gx','gy','gz','temp','labelWalking']
+basic_features = ['ay','az','gx','gy','gz','temp','labelWalking','labelShaking','labelStanding','labelTrotting']
 pca_features = ['pca_1','pca_2','pca_3','pca_4','pca_5','pca_6']
 time_features = [name for name in dataset.columns if ('temp_' in name and not 'ax' in name)]
 freq_features = [name for name in dataset.columns if (('_freq' in name) or ('_pse' in name))]
@@ -91,8 +90,8 @@ features_after_chapter_5 = list(set().union(basic_features, pca_features, time_f
 # selected_features = ['temp_pattern_labelOnTable','labelOnTable', 'temp_pattern_labelOnTable(b)labelOnTable', 'cluster',
 #                      'pca_1_temp_mean_ws_120','pca_2_temp_mean_ws_120','pca_2','acc_watch_y_temp_mean_ws_120','gyr_watch_y_pse',
 #                      'gyr_watch_x_pse']
-possible_feature_sets = [basic_features, features_after_chapter_3, features_after_chapter_4, features_after_chapter_5]
-feature_names = ['initial set', 'Chapter 3', 'Chapter 4', 'Chapter 5', 'Selected features']
+possible_feature_sets = [features_after_chapter_5]
+feature_names = ['Chapter 5']
 
 # Let us first study whether the time series is stationary and what the autocorrelations are.
 
@@ -109,7 +108,7 @@ eval = RegressionEvaluation()
 
 # We repeat the experiment a number of times to get a bit more robust data as the initialization of e.g. the NN is random.
 
-repeats = 10
+repeats = 1
 
 # we set a washout time to give the NN's the time to stabilize. We do not compute the error during the washout time.
 
@@ -136,15 +135,17 @@ for i in range(0, len(possible_feature_sets)):
 
     for repeat in range(0, repeats):
         print(f'---- run {repeat} ---')
-        regr_train_y, regr_test_y = learner.reservoir_computing(selected_train_X, train_y, selected_test_X, test_y, gridsearch=True, per_time_step=False)
 
-        mean_tr, std_tr = eval.mean_squared_error_with_std(train_y.iloc[washout_time:,], regr_train_y.iloc[washout_time:,])
-        mean_te, std_te = eval.mean_squared_error_with_std(test_y.iloc[washout_time:,], regr_test_y.iloc[washout_time:,])
 
-        performance_tr_res += mean_tr
-        performance_tr_res_std += std_tr
-        performance_te_res += mean_te
-        performance_te_res_std += std_te
+        # regr_train_y, regr_test_y = learner.reservoir_computing(selected_train_X, train_y, selected_test_X, test_y, gridsearch=True, per_time_step=False)
+        #
+        # mean_tr, std_tr = eval.mean_squared_error_with_std(train_y.iloc[washout_time:,], regr_train_y.iloc[washout_time:,])
+        # mean_te, std_te = eval.mean_squared_error_with_std(test_y.iloc[washout_time:,], regr_test_y.iloc[washout_time:,])
+        #
+        # performance_tr_res += mean_tr
+        # performance_tr_res_std += std_tr
+        # performance_te_res += mean_te
+        # performance_te_res_std += std_te
 
         regr_train_y, regr_test_y = learner.recurrent_neural_network(selected_train_X, train_y, selected_test_X, test_y, gridsearch=True)
 

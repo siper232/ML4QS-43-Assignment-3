@@ -54,6 +54,8 @@ class PrepareDatasetForLearning:
     # to make the split reproducible.
     def split_single_dataset_classification(self, dataset, class_labels, matching, training_frac, filter=True, temporal=False, random_state=0):
         # Create a single class column if we have the 'like' option.
+        dataset=dataset.dropna()
+
         if matching == 'like':
             dataset = self.assign_label(dataset, class_labels)
             class_labels = self.class_col
@@ -84,6 +86,7 @@ class PrepareDatasetForLearning:
         return training_set_X, test_set_X, training_set_y, test_set_y
 
     def split_single_dataset_regression_by_time(self, dataset, target, start_training, end_training, end_test):
+        dataset = dataset.dropna()
         training_instances = dataset[start_training:end_training]
         test_instances = dataset[end_training:end_test]
         train_y = copy.deepcopy(training_instances[target])
@@ -105,6 +108,7 @@ class PrepareDatasetForLearning:
         # We just temporarily change some attribute values associated with the classification algorithm
         # and change them for numerical values. We then simply apply the classification variant of the
         # function.
+        dataset = dataset.dropna()
         temp_default_label = self.default_label
         self.default_label = np.nan
         training_set_X, test_set_X, training_set_y, test_set_y = self.split_single_dataset_classification(dataset, targets, 'exact', training_frac, filter=filter, temporal=temporal, random_state=random_state)

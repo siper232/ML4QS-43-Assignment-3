@@ -42,8 +42,8 @@ EXPORT_TREE_PATH.mkdir(exist_ok=True, parents=True)
 
 prepare = PrepareDatasetForLearning()
 
-train_X, test_X, train_y, test_y = prepare.split_single_dataset_regression_by_time(dataset, 'ax', '2016-02-08 18:28:56',
-                                                                                   '2016-02-08 19:34:07', '2016-02-08 20:07:50')
+train_X, test_X, train_y, test_y = prepare.split_single_dataset_regression_by_time(dataset, 'ax', '2022-06-07 00:00:05',
+                                                                                   '2022-06-07 01:22:26', '2022-06-07 01:56:43')
 #                                                                                   '2016-02-08 18:28:58','2016-02-08 18:28:59')
 
 print('Training set length is: ', len(train_X.index))
@@ -66,8 +66,18 @@ features_after_chapter_4 = list(set().union(basic_features, pca_features, time_f
 features_after_chapter_5 = list(set().union(basic_features, pca_features, time_features, freq_features, cluster_features))
 
 fs = FeatureSelectionRegression()
+selected_features, ordered_features, ordered_scores = fs.forward_selection(10,
+                                                                  train_X[features_after_chapter_3],
+                                                                  train_y,)
+print(ordered_scores)
+print(selected_features)
+print(ordered_features)
+DataViz.plot_xy(x=[range(1, 10+1)], y=[ordered_scores],
+                xlabel='number of features', ylabel='MSE')
 
 # First, let us consider the Pearson correlations and see whether we can select based on them.
+print(train_X[features_after_chapter_5].isna().sum())
+print(train_y.isna().sum())
 features, correlations = fs.pearson_selection(10, train_X[features_after_chapter_5], train_y)
 util.print_pearson_correlations(correlations)
 
@@ -77,8 +87,8 @@ selected_features = ['temp_pattern_labelOnTable','labelOnTable','temp_pattern_la
                      'pca_1_temp_mean_ws_120','acc_watch_y_temp_mean_ws_120','pca_2','acc_phone_z_temp_mean_ws_120',
                      'gyr_watch_y_pse','gyr_watch_x_pse']
 
-possible_feature_sets = [basic_features, features_after_chapter_3, features_after_chapter_4, features_after_chapter_5, selected_features]
-feature_names = ['initial set', 'Chapter 3', 'Chapter 4', 'Chapter 5', 'Selected features']
+possible_feature_sets = [features_after_chapter_5]
+feature_names = ['Chapter 5']
 
 # Let us first study the importance of the parameter settings.
 

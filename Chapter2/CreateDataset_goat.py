@@ -82,9 +82,9 @@ class CreateDataset:
                     self.data_table.loc[self.data_table.index[i], str(prefix)+str(col)] = np.nan
         # add label columns
         self.data_table['labelWalking'] = np.where(self.data_table['label'] == 'walking', 1, 0)
-        # self.data_table['labelShaking'] = np.where(self.data_table['label'] == 'shaking', 1, 0)
-        # self.data_table['labelStanding'] = np.where(self.data_table['label'] == 'standing', 1, 0)
-        # self.data_table['labelTrotting'] = np.where(self.data_table['label'] == 'trotting', 1, 0)
+        self.data_table['labelShaking'] = np.where(self.data_table['label'] == 'shaking', 1, 0)
+        self.data_table['labelStanding'] = np.where(self.data_table['label'] == 'standing', 1, 0)
+        self.data_table['labelTrotting'] = np.where(self.data_table['label'] == 'trotting', 1, 0)
         self.data_table.drop('label',axis=1,inplace=True)
 
 

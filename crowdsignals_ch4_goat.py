@@ -93,9 +93,9 @@ def main():
         dataset = NumAbs.abstract_numerical(dataset, selected_predictor_cols, ws, 'mean')
         dataset = NumAbs.abstract_numerical(dataset, selected_predictor_cols, ws, 'std')
         # TODO: Add your own aggregation methods here
-        dataset = NumAbs.abstract_numerical(dataset, selected_predictor_cols, ws, 'sum')
-        dataset = NumAbs.abstract_numerical(dataset, selected_predictor_cols, ws, 'first')
-        dataset = NumAbs.abstract_numerical(dataset, selected_predictor_cols, ws, 'last')
+        # dataset = NumAbs.abstract_numerical(dataset, selected_predictor_cols, ws, 'sum')
+        # dataset = NumAbs.abstract_numerical(dataset, selected_predictor_cols, ws, 'first')
+        # dataset = NumAbs.abstract_numerical(dataset, selected_predictor_cols, ws, 'last')
         
         DataViz.plot_dataset(dataset, ['ax', 'gx','pca_1'], ['like', 'like','like'], ['line', 'line', 'line'])
 
@@ -131,7 +131,7 @@ def main():
 if __name__ == '__main__':
     # Command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('--mode', type=str, default='final',
+    parser.add_argument('--mode', type=str, default='aggregation',
                         help= "Select what version to run: final, aggregation or freq \
                         'aggregation' studies the effect of several aggeregation methods \
                         'frequency' applies a Fast Fourier transformation to a single variable \

@@ -37,7 +37,7 @@ for milliseconds_per_instance in GRANULARITIES:
 
     # Create an initial dataset object with the base directory for our data and a granularity
     dataset = CreateDataset(DATASET_PATH, milliseconds_per_instance)
-    datasetsize = 10000
+    datasetsize = 700000
     # Add the selected measurements to it.
 
     # We add the accelerometer data (continuous numerical measurements) of the phone and the smartwatch
@@ -45,6 +45,7 @@ for milliseconds_per_instance in GRANULARITIES:
     dataset.add_numerical_dataset('pos_A.csv', 'timestamp_ms',datasetsize, ["ax","ay","az"], 'avg', '')
     dataset.add_numerical_dataset('pos_A.csv', 'timestamp_ms', datasetsize, ["gx", "gy", "gz"], 'avg', '')
     dataset.add_numerical_dataset('pos_A.csv', 'timestamp_ms', datasetsize, ["temp"], 'avg', '')
+    dataset.add_numerical_dataset('pos_A.csv', 'timestamp_ms', datasetsize, ["pressure"], 'avg', '')
     # We add the gyroscope data (continuous numerical measurements) of the phone and the smartwatch
     # and aggregate the values per timestep by averaging the values
 

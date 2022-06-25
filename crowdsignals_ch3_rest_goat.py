@@ -60,17 +60,16 @@ def main():
 
     if FLAGS.mode == 'imputation':
         # Let us impute the missing values and plot an example.
+        for i in dataset.columns:
+            print(i,dataset[i].isna().sum()/len(dataset[i]))
 
-
-        imputed_mean_dataset = MisVal.impute_mean(copy.deepcopy(dataset), 'press_phone_X (hPa)')
-        imputed_median_dataset = MisVal.impute_median(copy.deepcopy(dataset), 'press_phone_X (hPa)')
-        imputed_interpolation_dataset = MisVal.impute_interpolate(copy.deepcopy(dataset), 'press_phone_X (hPa)')
-        imputed_kalman_filter_dataset = MisVal.kalman_filter(copy.deepcopy(dataset), 'press_phone_X (hPa)')
-        DataViz.plot_imputed_values(dataset, ['original', 'mean', 'median', 'interpolation', 'kalman filter'], 'press_phone_X (hPa)',
-                                    imputed_mean_dataset['press_phone_X (hPa)'],
-                                    imputed_median_dataset['press_phone_X (hPa)'],
-                                    imputed_interpolation_dataset['press_phone_X (hPa)'],
-                                    imputed_kalman_filter_dataset['press_phone_X (hPa)'])
+        # imputed_mean_dataset = MisVal.impute_mean(copy.deepcopy(dataset), 'pressure')
+        # imputed_median_dataset = MisVal.impute_median(copy.deepcopy(dataset), 'pressure')
+        imputed_interpolation_dataset = MisVal.impute_interpolate(copy.deepcopy(dataset), 'ax')
+        # imputed_kalman_filter_dataset = MisVal.kalman_filter(copy.deepcopy(dataset), 'pressure')
+        print(imputed_interpolation_dataset.shape)
+        # DataViz.plot_dataset(imputed_interpolation_dataset,['pressure'],['like'],['line'])
+        DataViz.plot_imputed_values(dataset, ['original', 'interpolation'], 'ax', imputed_interpolation_dataset['ax'])
 
     elif FLAGS.mode == 'kalman':
         # Using the result from Chapter 2, let us try the Kalman filter on the light_phone_lux attribute and study the result.
@@ -84,10 +83,10 @@ def main():
 
         KalFilter = KalmanFilters()
         kalman_dataset = KalFilter.apply_kalman_filter(
-            original_dataset, 'acc_phone_x')
+            original_dataset, 'pressure')
         DataViz.plot_imputed_values(kalman_dataset, [
-                                    'original', 'kalman'], 'acc_phone_x', kalman_dataset['acc_phone_x_kalman'])
-        DataViz.plot_dataset(kalman_dataset, ['acc_phone_x', 'acc_phone_x_kalman'], [
+                                    'original', 'kalman'], 'pressure', kalman_dataset['pressure_kalman'])
+        DataViz.plot_dataset(kalman_dataset, ['pressure', 'pressure_kalman'], [
                              'exact', 'exact'], ['line', 'line'])
 
         # We ignore the Kalman filter output for now...
@@ -142,7 +141,7 @@ def main():
 
         # And now let us include all LOWPASS measurements that have a form of periodicity (and filter them):
         periodic_measurements = ['ax', 'ay', 'az', 'gx', 'gy',
-                                 'gz']
+                                 'gz','pressure']
 
 
         # Let us apply a lowpass filter and reduce the importance of the data above 1.5 Hz
@@ -178,7 +177,7 @@ def main():
 if __name__ == '__main__':
     # Command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('--mode', type=str, default='final',
+    parser.add_argument('--mode', type=str, default='imputation',
                         help="Select what version to run: final, imputation, lowpass or PCA \
                         'lowpass' applies the lowpass-filter to a single variable \
                         'imputation' is used for the next chapter \
